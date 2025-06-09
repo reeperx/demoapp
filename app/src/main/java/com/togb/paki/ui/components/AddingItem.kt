@@ -1,159 +1,179 @@
 package com.togb.paki.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import android.util.Log
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.togb.paki.ui.data.PackingItem
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddingItem(
-    onDismiss: () -> Unit, // CLosing AlertDialog
-    onAddItem: (PackingItem) -> Unit // Adding Items
+fun AddItemDialog(
+    // Callback function to be invoked when an item is successfully added.
+    // It takes the new PackingItem as an argument.
+    onAddItem: (PackingItem) -> Unit,
+    // Callback function to be invoked when the dialog is dismissed.
+    onDismiss: () -> Unit
 ) {
-    // Variables for capturing data
-    // affected by state since data changes from user input
+    // State variables to hold the current text input for each field.
+    // `remember` keeps the state across recompositions, and `mutableStateOf` makes it observable.
     var itemName by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
-    var quantity by remember { mutableStateOf("") } // Initially its going to be a string
+    var quantity by remember { mutableStateOf("") }
     var comments by remember { mutableStateOf("") }
 
-    // Variables for displaying error states
-    // Will onl display if the fields are not valid or validation fails
-    var itemNameError by remember { mutableStateOf<String?>(null) } // Output: "Please fill out ItemName"
+    // State variables to hold error messages for each field.
+    var itemNameError by remember { mutableStateOf<String?>(null) }
     var categoryError by remember { mutableStateOf<String?>(null) }
     var quantityError by remember { mutableStateOf<String?>(null) }
-    var commentsError by remember { mutableStateOf<String?>(null) }
+
 
     AlertDialog(
         onDismissRequest = onDismiss,
-    ) {
-        Surface {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-            ) {
-                // ItemName TextField
-                // Captures user item name
+        title = {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                fontSize = 18.sp,
+                textDecoration = TextDecoration.None,
+                text = "Add New Packing Item"
+            )
+        },
+        text = {
+            // Column for vertical arrangement of input fields.
+            Column(modifier = Modifier.padding(16.dp)) {
+                // OutlinedTextField for Item Name input.
                 OutlinedTextField(
                     value = itemName,
                     onValueChange = {
-                        itemName = it;
+                        itemName = it
                         itemNameError = null
+                        Log.d("AddItemDialog", "Item Name changed to: $itemName")
                     },
-                    label = { Text("Add Item") },
-                    isError = itemNameError != null, // Display Error if any or "null/nothing" if no error
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    label = { Text("Item Name") },
+                    isError = itemNameError != null,
+                    modifier = Modifier.fillMaxWidth()
                 )
-
-                // Display the error message ("itemName") to the user
-                itemNameError?.let {
-                    Text(
-                        it, // holds data from "itemName"
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
+                // Display error message if present.
+                itemNameError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
                 Spacer(modifier = Modifier.height(8.dp))
-                // Category TextField
-                // Captures user item name
+
+                // OutlinedTextField for Category input.
                 OutlinedTextField(
                     value = category,
                     onValueChange = {
-                        category = it;
+                        category = it
                         categoryError = null
+                        Log.d("AddItemDialog", "Item Name changed to: $category")
                     },
-                    label = { Text("Add Category") },
-                    isError = categoryError != null, // Display Error if any or "null/nothing" if no error
-                    modifier = Modifier
-                        .fillMaxWidth()
-
+                    label = { Text("Category") },
+                    isError = categoryError != null,
+                    modifier = Modifier.fillMaxWidth()
                 )
-                // Display the error message ("category") to the user
-                categoryError?.let {
-                    Text(
-                        it, // holds data from "itemName"
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
+                categoryError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
                 Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier
-                        .padding(4.dp),
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Button(
-                        onClick = {}
-                    ) {
-                        Text("Close")
-                    }
-                    Button(
-                        onClick = {
-                            // Reset form errors before checking if data is correct
-                            itemNameError = null
-                            categoryError = null
-                            quantityError = null
-                            commentsError = null
 
-                            var isValid = true
+                // OutlinedTextField for Quantity input.
+                OutlinedTextField(
+                    value = quantity,
+                    onValueChange = {
+                        quantity = it
+                        quantityError = null
+                        Log.d("AddItemDialog", "Item Name changed to: $quantity")
+                    },
+                    label = { Text("Quantity") },
+                    // Restrict keyboard to numbers only for quantity.
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    isError = quantityError != null,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                quantityError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
+                Spacer(modifier = Modifier.height(8.dp))
 
-                            // check if itemName is empty
-                            if (itemName.isBlank()) {
-                                itemNameError = "Name Field is Empty"
-                                isValid = false
-                            }
-
-                            // check if category is empty
-                            if (category.isBlank()) {
-                                categoryError = "Category Field is Empty"
-                                isValid = false
-                            }
-
-                            // check if all fields are filled-up
-                            if (isValid) {
-                                onAddItem(
-                                    PackingItem(
-                                        name = itemName,
-                                        category = category,
-                                        quantity = 10,
-                                        comments = comments
-                                    )
-                                )
-                                onDismiss() // Closes automatically after adding items
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(Color.Green)
-                    ) {
-                        Text("Add")
-                    }
-                }
+                // OutlinedTextField for Comments input.
+                OutlinedTextField(
+                    value = comments,
+                    onValueChange = {
+                        comments = it
+                        Log.d("AddItemDialog", "Item Name changed to: $comments")
+                    },
+                    label = { Text("Comments (Optional)") }, modifier = Modifier.fillMaxWidth()
+                )
             }
-        }
-    }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    Log.d("AddItemDialog", "Add button clicked.")
+                    // --- Input Validation ---
+                    // Reset errors before validating.
+                    itemNameError = null
+                    categoryError = null
+                    quantityError = null
+
+                    var isValid = true
+
+                    // Check if item name is empty.
+                    if (itemName.isBlank()) {
+                        itemNameError = "Item Name cannot be empty"
+                        isValid = false
+                    }
+                    // Check if category is empty.
+                    if (category.isBlank()) {
+                        categoryError = "Category cannot be empty"
+                        isValid = false
+                    }
+
+                    // Try to parse quantity to an integer.
+                    val parsedQuantity = quantity.toIntOrNull()
+                    if (parsedQuantity == null || parsedQuantity <= 0) {
+                        quantityError = "Quantity must be a positive number"
+                        isValid = false
+                    }
+
+                    // If all inputs are valid, create and add the item.
+                    if (isValid) {
+                        onAddItem(
+                            PackingItem(
+                                name = itemName,
+                                category = category,
+                                quantity = parsedQuantity
+                                    ?: 0, // Use 0 if parsing failed (shouldn't happen if isValid is true)
+                                comments = comments
+                            )
+                        )
+                        onDismiss()
+                    }
+                }, colors = ButtonDefaults.buttonColors(Color.Green)
+            ) {
+                Text("Add")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    Log.d("AddItemDialog", "Cancel button clicked.")
+                    onDismiss()
+                },
+                colors = ButtonDefaults.buttonColors(Color.Red)
+            ) {
+                Text("Cancel")
+            }
+        })
 }
 
 @Preview(showBackground = true)
 @Composable
-fun AddingItemPreview() {
-    AddingItem(
-        onDismiss = {},
-        onAddItem = {}
-    )
+fun AddItemDialogPreview() {
+    AddItemDialog(onAddItem = {}, onDismiss = {})
 }
