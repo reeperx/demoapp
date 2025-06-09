@@ -19,20 +19,15 @@ import com.togb.paki.ui.data.PackingItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddItemDialog(
-    // Callback function to be invoked when an item is successfully added.
-    // It takes the new PackingItem as an argument.
     onAddItem: (PackingItem) -> Unit,
-    // Callback function to be invoked when the dialog is dismissed.
     onDismiss: () -> Unit
 ) {
-    // State variables to hold the current text input for each field.
-    // `remember` keeps the state across recompositions, and `mutableStateOf` makes it observable.
+
     var itemName by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
     var quantity by remember { mutableStateOf("") }
     var comments by remember { mutableStateOf("") }
 
-    // State variables to hold error messages for each field.
     var itemNameError by remember { mutableStateOf<String?>(null) }
     var categoryError by remember { mutableStateOf<String?>(null) }
     var quantityError by remember { mutableStateOf<String?>(null) }
@@ -169,7 +164,8 @@ fun AddItemDialog(
             ) {
                 Text("Cancel")
             }
-        })
+        }
+    )
 }
 
 @Preview(showBackground = true)

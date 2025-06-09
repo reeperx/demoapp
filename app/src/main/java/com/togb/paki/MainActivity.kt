@@ -1,71 +1,59 @@
 package com.togb.paki
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.togb.paki.ui.components.AddItemDialog
-import com.togb.paki.ui.components.MyButton
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.togb.paki.ui.data.ListViewModel
+import com.togb.paki.ui.screens.ScreenOne
 import com.togb.paki.ui.theme.PakiTheme
+import kotlin.getValue
 
 class MainActivity : ComponentActivity() {
+    private val listViewModel: ListViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             PakiTheme {
-                PackingListScreen()
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Test2(listViewModel)
+                }
             }
         }
     }
 }
 
-
 @Composable
-fun PackingListScreen() {
-    // State to control whether the AddItemDialog should be shown or hidden.
-    var showAddItemDialog by remember { mutableStateOf(false) }
+fun Test2(viewModel: ListViewModel) {
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = "main_screen"
     ) {
-
-        MyButton(onClick = { showAddItemDialog = true })
-
-        // Conditional rendering of the AddItemDialog.
-        // It will only be composed (and thus displayed) when 'showAddItemDialog' is true.
-        if (showAddItemDialog) {
-            AddItemDialog(
-                onAddItem = { newItem ->
-                    Log.d("PackingListScreen", "New item added: $newItem")
-                },
-                onDismiss = {
-                    showAddItemDialog = false
-                }
+        composable("main_screen") {
+            ScreenOne(
+                navController = navController,
+                viewModel = viewModel
             )
         }
+
     }
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun PackingListScreenPreview() {
-    PakiTheme {
-        PackingListScreen()
-    }
-}
