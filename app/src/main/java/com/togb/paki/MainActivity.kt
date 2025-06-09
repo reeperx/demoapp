@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -19,7 +20,7 @@ import com.togb.paki.ui.theme.PakiTheme
 import kotlin.getValue
 
 class MainActivity : ComponentActivity() {
-    private val listViewModel: ListViewModel by viewModels()
+//    private val listViewModel: ListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,32 +29,32 @@ class MainActivity : ComponentActivity() {
             PakiTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Color.Cyan
                 ) {
-                    Test2(listViewModel)
+                    ScreenOne()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Test2(viewModel: ListViewModel) {
-
-    val navController = rememberNavController()
-
-    NavHost(
-        navController = navController,
-        startDestination = "main_screen"
-    ) {
-        composable("main_screen") {
-            ScreenOne(
-                navController = navController,
-                viewModel = viewModel
-            )
-        }
-
-    }
-}
+//@Composable
+//fun Test2(viewModel: ListViewModel) {
+//
+//    val navController = rememberNavController()
+//
+//    NavHost(
+//        navController = navController,
+//        startDestination = "main_screen"
+//    ) {
+//        composable("main_screen") {
+//            ScreenOne(
+//                navController = navController,
+//                viewModel = viewModel
+//            )
+//        }
+//
+//    }
+//}
 
 

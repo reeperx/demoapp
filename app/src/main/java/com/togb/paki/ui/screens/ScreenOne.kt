@@ -1,5 +1,6 @@
 package com.togb.paki.ui.screens
 
+
 import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,31 +23,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.togb.paki.ui.components.AddItemDialog
-import com.togb.paki.ui.data.ListViewModel
 import com.togb.paki.ui.theme.PakiTheme
 
 @Composable
 fun ScreenOne(
-    navController: NavController,
-    viewModel: ListViewModel
-) {
 
+) {
     val context = LocalContext.current
-    val activity = (context as? Activity)
+    val activity = ( context as? Activity)
 
     var showAddItemDialog by remember { mutableStateOf(false) }
 
-    if (showAddItemDialog) {
+    if(showAddItemDialog){
         AddItemDialog(
             onAddItem = { newItem ->
-                viewModel.addItem(newItem)
                 showAddItemDialog = false
             },
-            onDismiss = {
-                showAddItemDialog = false
-            }
+            onDismiss = { showAddItemDialog = false }
         )
     }
 
@@ -56,26 +50,32 @@ fun ScreenOne(
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
+    ){
         Button(
             onClick = {
                 showAddItemDialog = true
             },
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(Color.Black)
+            colors = ButtonDefaults.buttonColors(Color.Green)
         ) {
-            Text("Add to Packing List")
+            Text(
+                text = "Add to Packing List"
+            )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Button(
-            onClick = {navController.navigate("packing_list_screen")},
-            modifier = Modifier.fillMaxWidth()
+            onClick = {},
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(Color.Magenta)
         ) {
-            Text("View Packing List")
+            Text(
+                text = "Show Packing List"
+            )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Button(
             onClick = {
@@ -84,20 +84,17 @@ fun ScreenOne(
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(Color.Red)
         ) {
-            Text("Exit App")
+            Text(
+                text = "Exit"
+            )
         }
     }
-
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ScreenOnePreview() {
     PakiTheme {
-        ScreenOne(
-            navController = NavController(LocalContext.current),
-            viewModel = TODO()
-        )
+        ScreenOne()
     }
 }
