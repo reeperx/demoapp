@@ -45,9 +45,7 @@ fun AddItemDialog(
             )
         },
         text = {
-            // Column for vertical arrangement of input fields.
             Column(modifier = Modifier.padding(16.dp)) {
-                // OutlinedTextField for Item Name input.
                 OutlinedTextField(
                     value = itemName,
                     onValueChange = {
@@ -59,7 +57,6 @@ fun AddItemDialog(
                     isError = itemNameError != null,
                     modifier = Modifier.fillMaxWidth()
                 )
-                // Display error message if present.
                 itemNameError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -69,7 +66,7 @@ fun AddItemDialog(
                     onValueChange = {
                         category = it
                         categoryError = null
-                        Log.d("AddItemDialog", "Item Name changed to: $category")
+                        Log.d("AddItemDialog", "Category changed to: $category")
                     },
                     label = { Text("Category") },
                     isError = categoryError != null,
@@ -84,7 +81,7 @@ fun AddItemDialog(
                     onValueChange = {
                         quantity = it
                         quantityError = null
-                        Log.d("AddItemDialog", "Item Name changed to: $quantity")
+                        Log.d("AddItemDialog", "Quantity changed to: $quantity")
                     },
                     label = { Text("Quantity") },
                     // Restrict keyboard to numbers only for quantity.
@@ -100,7 +97,7 @@ fun AddItemDialog(
                     value = comments,
                     onValueChange = {
                         comments = it
-                        Log.d("AddItemDialog", "Item Name changed to: $comments")
+                        Log.d("AddItemDialog", "Comments changed to: $comments")
                     },
                     label = { Text("Comments (Optional)") }, modifier = Modifier.fillMaxWidth()
                 )
@@ -110,8 +107,6 @@ fun AddItemDialog(
             Button(
                 onClick = {
                     Log.d("AddItemDialog", "Add button clicked.")
-                    // --- Input Validation ---
-                    // Reset errors before validating.
                     itemNameError = null
                     categoryError = null
                     quantityError = null
