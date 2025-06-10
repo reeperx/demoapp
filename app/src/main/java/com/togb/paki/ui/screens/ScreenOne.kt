@@ -2,6 +2,7 @@ package com.togb.paki.ui.screens
 
 
 import android.app.Activity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,12 +26,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.togb.paki.ui.components.AddItemDialog
+import com.togb.paki.ui.model.ListViewModel
 import com.togb.paki.ui.theme.PakiTheme
 
 @Composable
 fun ScreenOne(
-
+    navController: NavController
 ) {
     val context = LocalContext.current
     val activity = ( context as? Activity)
@@ -47,6 +52,7 @@ fun ScreenOne(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(color = Color.Cyan)
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -56,7 +62,7 @@ fun ScreenOne(
                 showAddItemDialog = true
             },
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(Color.Green)
+            colors = ButtonDefaults.buttonColors(Color.Black)
         ) {
             Text(
                 text = "Add to Packing List"
@@ -66,7 +72,9 @@ fun ScreenOne(
         Spacer(modifier = Modifier.height(8.dp))
 
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate("screen_two")
+            },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(Color.Magenta)
         ) {
@@ -95,6 +103,8 @@ fun ScreenOne(
 @Composable
 fun ScreenOnePreview() {
     PakiTheme {
-        ScreenOne()
+        ScreenOne(
+            navController = TODO()
+        )
     }
 }

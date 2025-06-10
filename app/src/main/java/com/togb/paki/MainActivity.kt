@@ -6,21 +6,22 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.togb.paki.ui.data.ListViewModel
+import com.togb.paki.ui.model.ListViewModel
 import com.togb.paki.ui.screens.ScreenOne
+import com.togb.paki.ui.screens.ScreenTwo
 import com.togb.paki.ui.theme.PakiTheme
 import kotlin.getValue
 
 class MainActivity : ComponentActivity() {
-//    private val listViewModel: ListViewModel by viewModels()
+    private val listViewModel: ListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,30 +32,31 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Color.Cyan
                 ) {
-                    ScreenOne()
+                    Navigation(listViewModel)
                 }
             }
         }
     }
 }
 
-//@Composable
-//fun Test2(viewModel: ListViewModel) {
-//
-//    val navController = rememberNavController()
-//
-//    NavHost(
-//        navController = navController,
-//        startDestination = "main_screen"
-//    ) {
-//        composable("main_screen") {
-//            ScreenOne(
-//                navController = navController,
-//                viewModel = viewModel
-//            )
-//        }
-//
-//    }
-//}
+@Composable
+fun Navigation(viewModel: ListViewModel){
+    val navController  = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = "screen_one"
+    ) {
+        composable("screen_one") {
+            ScreenOne(navController = navController)
+        }
+        composable("screen_two") {
+            ScreenTwo(navController = navController, viewModel = viewModel)
+        }
+    }
+
+}
+
+
 
 
