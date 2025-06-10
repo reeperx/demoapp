@@ -48,7 +48,7 @@ fun Navigation(viewModel: ListViewModel){
         startDestination = "screen_one"
     ) {
         composable("screen_one") {
-            ScreenOne(navController = navController)
+            ScreenOne(navController = navController, viewModel = viewModel)
         }
         composable("screen_two") {
             ScreenTwo(navController = navController, viewModel = viewModel)

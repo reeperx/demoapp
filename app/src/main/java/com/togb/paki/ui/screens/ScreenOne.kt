@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.togb.paki.ui.components.AddItemDialog
 import com.togb.paki.ui.model.ListViewModel
@@ -33,7 +34,8 @@ import com.togb.paki.ui.theme.PakiTheme
 
 @Composable
 fun ScreenOne(
-    navController: NavController
+    navController: NavController,
+    viewModel: ListViewModel
 ) {
     val context = LocalContext.current
     val activity = ( context as? Activity)
@@ -43,6 +45,7 @@ fun ScreenOne(
     if(showAddItemDialog){
         AddItemDialog(
             onAddItem = { newItem ->
+                viewModel.addItem(newItem)
                 showAddItemDialog = false
             },
             onDismiss = { showAddItemDialog = false }
@@ -104,7 +107,8 @@ fun ScreenOne(
 fun ScreenOnePreview() {
     PakiTheme {
         ScreenOne(
-            navController = TODO()
+            navController = TODO(),
+            viewModel = TODO()
         )
     }
 }
